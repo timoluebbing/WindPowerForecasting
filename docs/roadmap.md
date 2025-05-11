@@ -19,8 +19,8 @@ The data is available in the following files:
 
 ## Roadmap
 
-- [ ] **Check Data Availabe**: What data is available? What are the time periods of the datasets? Are there any missing values?
-- [ ] **Data Preprocessing**: Load and preprocess the data, including handling missing values and merging datasets.
+- [x] **Check Data Availabe**: What data is available? What are the time periods of the datasets? Are there any missing values?
+- [x] **Data Preprocessing**: Load and preprocess the data, including handling missing values and merging datasets.
 - [ ] **Feature Engineering**: Create relevant features from the weather data and the power generation data.
 - [ ] **Model Selection**: Choose a GP Regression model.
 - [ ] **Model Training**: Train the GP model on the training set, using the last available year of data as the test set.

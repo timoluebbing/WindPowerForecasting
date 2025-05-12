@@ -1,7 +1,51 @@
 import pandas as pd
 import numpy as np
 
+from enum import Enum
+
 from sklearn.cluster import KMeans
+
+
+class Column(Enum):
+    DATE_FROM = "Date from"
+    DATE_TO = "Date to"
+    WIND_OFFSHORE = "Wind Offshore [MW] "
+    WIND_ONSHORE = "Wind Onshore [MW]"
+    WIND = "Wind Sum [MW]"
+
+
+def preprocess_supply_data(df: pd.DataFrame, resample: str = "h") -> pd.DataFrame:
+    # convert date columns to datetime
+    df[Column.DATE_FROM.value] = pd.to_datetime(
+        df[Column.DATE_FROM.value], format="%d.%m.%y %H:%M"
+    )
+    df[Column.DATE_TO.value] = pd.to_datetime(
+        df[Column.DATE_TO.value], format="%d.%m.%y %H:%M"
+    )
+    df.set_index(Column.DATE_FROM.value, inplace=True)
+    df.sort_index(inplace=True)
+
+    # Columns to exclude from numeric conversion
+    non_numeric_cols = [Column.DATE_FROM.value, Column.DATE_TO.value]
+
+    # Convert relevant columns to numeric
+    for col in df.columns:
+        if col not in non_numeric_cols:
+            df[col] = (
+                df[col]
+                .astype(str)
+                .str.replace(".", "", regex=False)
+                .str.replace(",", ".", regex=False)
+            )
+            df[col] = pd.to_numeric(df[col], errors="coerce")  # error handling --> NaN
+
+    # 15 minutes intervals summed up to 1 hour intervals
+    df = df.resample(resample).sum(numeric_only=True)
+    
+    # Sum up wind offshore and onshore
+    df[Column.WIND.value] = df[Column.WIND_OFFSHORE.value] + df[Column.WIND_ONSHORE.value]
+
+    return df
 
 
 def weather_germany_mean(weather: pd.DataFrame) -> pd.DataFrame:

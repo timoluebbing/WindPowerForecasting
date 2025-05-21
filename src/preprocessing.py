@@ -99,3 +99,154 @@ def weather_germany_clustered(weather: pd.DataFrame, k_clusters: int) -> pd.Data
     weather.columns = weather.columns.map(lambda x: f"{x[0]}_cluster_{x[1]}")
     
     return weather
+
+
+def create_time_features(df: pd.DataFrame):
+    """
+    Create time-based features from the datetime index of the dataframe.
+
+    Args:
+        df: DataFrame with DatetimeIndex
+
+    Returns:
+        DataFrame with time features added
+    """
+    df_with_features = df.copy()
+
+    # Add cyclical time features from the datetime index
+    df_with_features["hour_sin"] = np.sin(2 * np.pi * df.index.hour / 24)
+    df_with_features["hour_cos"] = np.cos(2 * np.pi * df.index.hour / 24)
+    
+    df_with_features["dayofweek_sin"] = np.sin(2 * np.pi * df.index.dayofweek / 7)
+    df_with_features["dayofweek_cos"] = np.cos(2 * np.pi * df.index.dayofweek / 7)
+    
+    df_with_features["month_sin"] = np.sin(2 * np.pi * df.index.month / 12)
+    df_with_features["month_cos"] = np.cos(2 * np.pi * df.index.month / 12)
+    
+    df_with_features["dayofyear_sin"] = np.sin(2 * np.pi * df.index.dayofyear / 365)
+    df_with_features["dayofyear_cos"] = np.cos(2 * np.pi * df.index.dayofyear / 365)
+
+    return df_with_features
+
+
+def create_sliding_window_data(
+    data: pd.DataFrame,
+    history: int,
+    forecast_horizon: int,
+    target_column: str = Column.WIND.value,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """
+    Create sliding window data for time series forecasting, returning pandas DataFrames.
+
+    Args:
+        data: DataFrame with a DatetimeIndex and columns for the target and other features.
+        history: Number of past time steps of the target_column to use as input lags.
+        forecast_horizon: Number of future time steps to predict for the target_column.
+        target_column: Column name of the target variable.
+
+    Returns:
+        X_df: pd.DataFrame, indexed by the timestamp of the last observation in the
+              history window. Columns include lagged target values (e.g., 'lag_1', 'lag_2')
+              and current values of other feature columns.
+        y_df: pd.DataFrame, indexed similarly to X_df. Columns include future target
+              values (e.g., 't+1', 't+2').
+    """
+    other_feature_columns = [
+        col for col in data.columns if col != target_column
+    ]
+
+    X_data_list = []
+    y_data_list = []
+    index_list = []
+
+    n_total_timesteps = len(data)
+    max_start_idx = n_total_timesteps - history - forecast_horizon + 1
+
+    for start in range(max_start_idx):
+        history_end_idx = start + history
+        forecast_end_idx = history_end_idx + forecast_horizon
+
+        current_sample_timestamp = data.index[history_end_idx - 1]
+        index_list.append(current_sample_timestamp)
+
+        x_sample_dict = {}
+
+        # Lagged target features: target_values from t-history+1, ..., t
+        # lag_1 --> data[target_column].iloc[history_end_idx - 1] (most recent)
+        # lag_history --> data[target_column].iloc[start] (oldest in window)
+        target_window_values = data[target_column].iloc[start:history_end_idx].values
+        for h in range(history):
+            x_sample_dict[f"lag_{history - h}"] = target_window_values[h]
+        
+        # Current other features (e.g., weather, time features) at time t
+        if other_feature_columns:
+            current_other_features = data[other_feature_columns].iloc[history_end_idx - 1]
+            x_sample_dict.update(current_other_features.to_dict())
+        
+        X_data_list.append(x_sample_dict)
+
+        # Future target values: target_values from t+1, ..., t+forecast_horizon
+        future_target_values = data[target_column].iloc[history_end_idx:forecast_end_idx].values
+        y_sample_dict = {
+            f"t+{h+1}": future_target_values[h] for h in range(forecast_horizon)
+        }
+        y_data_list.append(y_sample_dict)
+
+    X_df = pd.DataFrame(X_data_list, index=pd.Index(index_list, name="timestamp"))
+    y_df = pd.DataFrame(y_data_list, index=pd.Index(index_list, name="timestamp"))
+
+    return X_df, y_df
+
+
+def create_sliding_window_data_numpy(
+    data: pd.DataFrame,
+    history: int,
+    forecast_horizon: int,
+    target_col: str = Column.WIND.value,
+):
+    """
+    Create multivariate sliding-window input/output for time series forecasting.
+
+    Args:
+        data: DataFrame with time-index and columns = [weather features ..., target]
+        history: Number of past time steps to use as input
+        forecast_horizon: Number of future time steps to predict
+        target_col: Name of the target column
+
+    Returns:
+        X: np.ndarray, shape (samples, history, n_features) where n_features = lagged target + current weather
+        y: np.ndarray, shape (samples, forecast_horizon) for the target values
+    """
+    # Weather features (all columns except the target)
+    feature_cols = [c for c in data.columns if c != target_col]
+
+    X_windows = []
+    y_windows = []
+
+    n_total = len(data)
+    max_start = n_total - history - forecast_horizon + 1
+
+    for start in range(max_start):
+        end_history = start + history
+
+        # Lagged target values for past 'history' steps
+        target_lags = data[target_col].iloc[start:end_history].values # shape = (history,)
+
+        # Weather features at the current time step (aligned with the end of the history window)
+        current_features = data[feature_cols].iloc[end_history - 1].values # shape = (n_features,)
+
+        # Concatenate lagged target and current weather features
+        window_X = np.concatenate([target_lags, current_features]) # shape = (history + n_features,)
+
+        # Future target values for forecast horizon
+        window_y = (
+            data[target_col].iloc[end_history : end_history + forecast_horizon].values
+        )
+
+        X_windows.append(window_X)
+        y_windows.append(window_y)
+
+    X = np.array(X_windows)  # shape = (samples, history + n_features)
+    y = np.array(y_windows)  # shape = (samples, forecast_horizon)
+
+    return X, y

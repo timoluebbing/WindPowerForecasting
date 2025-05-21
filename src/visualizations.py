@@ -87,3 +87,39 @@ def plot_wind_power_composition(
     plt.show()
 
     return fig
+
+
+def plot_wind_speed_components(weather: pd.DataFrame) -> None:
+    u10 = weather["u10"]
+    u100 = weather["u100"]
+    v10 = weather["v10"]
+    v100 = weather["v100"]
+
+    # Plot the data
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 10))
+    locator1 = ax1.xaxis.set_major_locator(mdates.AutoDateLocator())
+    ax1.xaxis.set_major_formatter(mdates.AutoDateFormatter(locator1))
+    locator2 = ax2.xaxis.set_major_locator(mdates.AutoDateLocator())
+    ax2.xaxis.set_major_formatter(mdates.AutoDateFormatter(locator2))
+
+    # Plot first subplot - u components
+    ax1.plot(weather.index, u10, label="u10 [m/s]", color="blue", alpha=0.5)
+    ax1.plot(weather.index, u100, label="u100 [m/s]", color="green", alpha=0.5)
+    ax1.plot(weather.index, u10.rolling(window=24*7).mean(), label="u10 Weekly MA [m/s]", color="darkblue", alpha=1)
+    ax1.plot(weather.index, u100.rolling(window=24*7).mean(), label="u100 Weekly MA [m/s]", color="darkgreen", alpha=1)
+    ax1.set_title("East-West Wind Speed Components (u)")
+    ax1.set_ylabel("Wind Speed [m/s]")
+    ax1.legend()
+
+    # Plot second subplot - v components
+    ax2.plot(weather.index, v10, label="v10 [m/s]", color="yellow", alpha=0.5)
+    ax2.plot(weather.index, v100, label="v100 [m/s]", color="red", alpha=0.5)
+    ax2.plot(weather.index, v10.rolling(window=24*7).mean(), label="v10 Weekly MA [m/s]", color="darkorange", alpha=1)
+    ax2.plot(weather.index, v100.rolling(window=24*7).mean(), label="v100 Weekly MA [m/s]", color="black", alpha=1)
+    ax2.set_title("North-South Wind Speed Components (v)")
+    ax2.set_xlabel("Time")
+    ax2.set_ylabel("Wind Speed [m/s]")
+    ax2.legend()
+
+    plt.tight_layout()
+    plt.show()

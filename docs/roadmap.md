@@ -21,11 +21,11 @@ The data is available in the following files:
 
 - [x] **Check Data Availabe**: What data is available? What are the time periods of the datasets? Are there any missing values?
 - [x] **Data Preprocessing**: Load and preprocess the data, including handling missing values and merging datasets.
-- [ ] **Feature Engineering**: Create relevant features from the weather data and the power generation data.
+- [x] **Feature Engineering**: Create relevant features from the weather data and the power generation data.
 - [ ] **Model Selection**: Choose a GP Regression model.
-- [ ] **Model Training**: Train the GP model on the training set, using the last available year of data as the test set.
-- [ ] **Model Evaluation**: Evaluate the model's performance using RMSE and CRPS metrics.
-- [ ] **Visualization**: Visualize the forecast results and errors for different forecast horizons.
-- [ ] **Documentation**: Document the code and results, including explanations of the methods used and their implications.
+- [x] **Model Training**: Train the GP model on the training set, using the last available year of data as the test set.
+- [x] **Model Evaluation**: Evaluate the model's performance using RMSE and CRPS metrics.
+- [x] **Visualization**: Visualize the forecast results and errors for different forecast horizons.
+- [x] **Documentation**: Document the code and results, including explanations of the methods used and their implications.
 - [ ] **Bonus Task**: Implement different feature selection approaches for the weather input and evaluate their impact on the model's performance.
 

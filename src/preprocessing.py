@@ -103,8 +103,10 @@ def weather_germany_clustered(weather: pd.DataFrame, k_clusters: int) -> pd.Data
 
 def create_time_features(df: pd.DataFrame):
     """
-    Create time-based features from the datetime index of the dataframe.
-
+    Create time-based features from the datetime index of the dataframe. 
+    Applying sine and cosine transformations for cyclical time features 
+    already scales the features for further processing.
+    
     Args:
         df: DataFrame with DatetimeIndex
 
@@ -113,9 +115,9 @@ def create_time_features(df: pd.DataFrame):
     """
     df_with_features = df.copy()
 
-    # Add cyclical time features from the datetime index
-    df_with_features["hour_sin"] = np.sin(2 * np.pi * df.index.hour / 24)
-    df_with_features["hour_cos"] = np.cos(2 * np.pi * df.index.hour / 24)
+    # Hour of day not needed for the given task and hourly lags included
+    # df_with_features["hour_sin"] = np.sin(2 * np.pi * df.index.hour / 24)
+    # df_with_features["hour_cos"] = np.cos(2 * np.pi * df.index.hour / 24)
     
     df_with_features["dayofweek_sin"] = np.sin(2 * np.pi * df.index.dayofweek / 7)
     df_with_features["dayofweek_cos"] = np.cos(2 * np.pi * df.index.dayofweek / 7)

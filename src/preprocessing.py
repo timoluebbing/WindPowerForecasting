@@ -41,9 +41,11 @@ def preprocess_supply_data(df: pd.DataFrame, resample: str = "h") -> pd.DataFram
 
     # 15 minutes intervals summed up to 1 hour intervals
     df = df.resample(resample).sum(numeric_only=True)
-    
+
     # Sum up wind offshore and onshore
-    df[Column.WIND.value] = df[Column.WIND_OFFSHORE.value] + df[Column.WIND_ONSHORE.value]
+    df[Column.WIND.value] = (
+        df[Column.WIND_OFFSHORE.value] + df[Column.WIND_ONSHORE.value]
+    )
 
     return df
 
@@ -61,6 +63,35 @@ def weather_germany_mean(weather: pd.DataFrame) -> pd.DataFrame:
     )
 
     return weather_aggregated_mean
+
+def weather_north_south_means(
+    weather: pd.DataFrame, lat_threshold: float
+) -> pd.DataFrame:
+    """
+    Split weather data into northern and southern Germany and compute means for
+    all numerical weather features.
+    
+    Args:
+        weather (pd.DataFrame): Weather data with latitude and longitude columns.
+    Returns:
+        pd.DataFrame: Mean weather data for northern and southern Germany.
+    """
+    weather = weather.reset_index()  # ensure 'time' column exists for grouping
+    numeric_weather_cols = weather.select_dtypes(include=np.number).columns.tolist()
+    numeric_weather_cols = [
+        col for col in numeric_weather_cols if col not in ["latitude", "longitude"]
+    ]
+    
+    weather["is_north"] = weather["latitude"] >= lat_threshold
+    weather_split_means = (
+        weather.groupby(["is_north", "time"])[numeric_weather_cols].mean().fillna(0)
+    )
+    weather = weather_split_means.unstack(level="is_north")
+    weather.columns = [
+        f"{col}_{'north' if is_north else 'south'}" for col, is_north in weather.columns
+    ]
+    
+    return weather
 
 
 def weather_germany_clustered(weather: pd.DataFrame, k_clusters: int) -> pd.DataFrame:
@@ -85,7 +116,7 @@ def weather_germany_clustered(weather: pd.DataFrame, k_clusters: int) -> pd.Data
         locations, on=["latitude", "longitude"], how="left"
     )
     weather_clustered.set_index("time", inplace=True)
-    
+
     numeric_weather_cols = weather.select_dtypes(include=np.number).columns.tolist()
     numeric_weather_cols = [
         col for col in numeric_weather_cols if col not in ["latitude", "longitude"]
@@ -97,16 +128,16 @@ def weather_germany_clustered(weather: pd.DataFrame, k_clusters: int) -> pd.Data
     )
     weather = weather_clustered_aggregated.unstack(level="cluster")
     weather.columns = weather.columns.map(lambda x: f"{x[0]}_cluster_{x[1]}")
-    
+
     return weather
 
 
 def create_time_features(df: pd.DataFrame):
     """
-    Create time-based features from the datetime index of the dataframe. 
-    Applying sine and cosine transformations for cyclical time features 
+    Create time-based features from the datetime index of the dataframe.
+    Applying sine and cosine transformations for cyclical time features
     already scales the features for further processing.
-    
+
     Args:
         df: DataFrame with DatetimeIndex
 
@@ -118,13 +149,13 @@ def create_time_features(df: pd.DataFrame):
     # Hour of day not needed for the given task and hourly lags included
     # df_with_features["hour_sin"] = np.sin(2 * np.pi * df.index.hour / 24)
     # df_with_features["hour_cos"] = np.cos(2 * np.pi * df.index.hour / 24)
-    
+
     df_with_features["dayofweek_sin"] = np.sin(2 * np.pi * df.index.dayofweek / 7)
     df_with_features["dayofweek_cos"] = np.cos(2 * np.pi * df.index.dayofweek / 7)
-    
+
     df_with_features["month_sin"] = np.sin(2 * np.pi * df.index.month / 12)
     df_with_features["month_cos"] = np.cos(2 * np.pi * df.index.month / 12)
-    
+
     df_with_features["dayofyear_sin"] = np.sin(2 * np.pi * df.index.dayofyear / 365)
     df_with_features["dayofyear_cos"] = np.cos(2 * np.pi * df.index.dayofyear / 365)
 
@@ -153,9 +184,7 @@ def create_sliding_window_data(
         y_df: pd.DataFrame, indexed similarly to X_df. Columns include future target
               values (e.g., 't+1', 't+2').
     """
-    other_feature_columns = [
-        col for col in data.columns if col != target_column
-    ]
+    other_feature_columns = [col for col in data.columns if col != target_column]
 
     X_data_list = []
     y_data_list = []
@@ -179,16 +208,20 @@ def create_sliding_window_data(
         target_window_values = data[target_column].iloc[start:history_end_idx].values
         for h in range(history):
             x_sample_dict[f"lag_{history - h}"] = target_window_values[h]
-        
+
         # Current other features (e.g., weather, time features) at time t
         if other_feature_columns:
-            current_other_features = data[other_feature_columns].iloc[history_end_idx - 1]
+            current_other_features = data[other_feature_columns].iloc[
+                history_end_idx - 1
+            ]
             x_sample_dict.update(current_other_features.to_dict())
-        
+
         X_data_list.append(x_sample_dict)
 
         # Future target values: target_values from t+1, ..., t+forecast_horizon
-        future_target_values = data[target_column].iloc[history_end_idx:forecast_end_idx].values
+        future_target_values = (
+            data[target_column].iloc[history_end_idx:forecast_end_idx].values
+        )
         y_sample_dict = {
             f"t+{h+1}": future_target_values[h] for h in range(forecast_horizon)
         }
@@ -232,13 +265,19 @@ def create_sliding_window_data_numpy(
         end_history = start + history
 
         # Lagged target values for past 'history' steps
-        target_lags = data[target_col].iloc[start:end_history].values # shape = (history,)
+        target_lags = (
+            data[target_col].iloc[start:end_history].values
+        )  # shape = (history,)
 
         # Weather features at the current time step (aligned with the end of the history window)
-        current_features = data[feature_cols].iloc[end_history - 1].values # shape = (n_features,)
+        current_features = (
+            data[feature_cols].iloc[end_history - 1].values
+        )  # shape = (n_features,)
 
         # Concatenate lagged target and current weather features
-        window_X = np.concatenate([target_lags, current_features]) # shape = (history + n_features,)
+        window_X = np.concatenate(
+            [target_lags, current_features]
+        )  # shape = (history + n_features,)
 
         # Future target values for forecast horizon
         window_y = (

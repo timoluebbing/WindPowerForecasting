@@ -47,4 +47,15 @@ The data is available in the following files:
   - Apply the target vs lags and time features correlation and MI scores
   - Select the joint set of all selection methods
 
-- Discussion TODO
+## TODO
+
+- [x] Split locations into north and south instead of germany wide average
+- [x] Do correlation and mutual information analysis along the target and all other features
+- [x] Discussion
+  - Feature selection difficult in practice
+  - GPs not optimal for this task, but good for uncertainty estimation
+    - Slow training for the given data size
+    - Not optimal for large datasets
+- [x] Future work
+  - Investigate the impact of different kernel functions in GPs
+  - Try other models like XGBoost for comparison

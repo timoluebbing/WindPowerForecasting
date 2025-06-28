@@ -1,7 +1,11 @@
-pandas
 numpy
-scikit-learn
-matplotlib
+pandas
 torch
 pgytorch
+scipy
+scikit-learn
+properscoring
+matplotlib
+seaborn
+tueplots
 tqdm

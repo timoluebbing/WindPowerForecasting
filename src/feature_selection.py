@@ -6,6 +6,15 @@ from sklearn.feature_selection import mutual_info_regression
 from tueplots.constants.color import rgb
 
 
+plt.rcParams.update(
+    {
+        "text.usetex": True,
+        "font.family": "serif",  # or 'sans-serif' or other LaTeX fonts
+        "text.latex.preamble": r"\usepackage{amsmath}",
+    }
+)
+
+
 def calculate_correlation_scores(X: pd.DataFrame, y: pd.Series) -> pd.Series:
     """
     Computes Pearson correlation scores between each feature in X and a target y.
@@ -80,23 +89,23 @@ def plot_feature_metrics_summary(
     """
 
     fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(12, 8), sharex=True)
-    fig.suptitle(f"Feature Importance with Target: {target_variable_name}", fontsize=16)
+    fig.suptitle(rf"Feature Importance with Target: {target_variable_name}", fontsize=16)
 
     # Plot Pearson Correlation Scores
     scores_to_plot_corr = correlation_scores.head(top_n)
     # For correlation, we care about magnitude and sign, so sort by absolute for top_n, then plot actual values
     # The sorting in calculate_target_correlation_scores already handles sorting by absolute value.
     scores_to_plot_corr[::-1].plot(kind='barh', ax=axes[0], color=rgb.tue_blue)
-    axes[0].set_title(f"Top {top_n} Features by Pearson Correlation (Ranked by Absolute Value)")
-    axes[0].set_xlabel("Pearson Correlation Coefficient")
-    axes[0].set_ylabel("Feature")
+    axes[0].set_title(rf"Top {top_n} Features by Pearson Correlation (Ranked by Absolute Value)")
+    axes[0].set_xlabel(r"Pearson Correlation Coefficient")
+    axes[0].set_ylabel(r"Feature")
 
     # Plot Mutual Information Scores
     scores_to_plot_mi = mi_scores.head(top_n)
     scores_to_plot_mi[::-1].plot(kind='barh', ax=axes[1], color=rgb.tue_red)
-    axes[1].set_title(f"Top {top_n} Features by Mutual Information")
-    axes[1].set_xlabel("Mutual Information Score")
-    axes[1].set_ylabel("Feature")
+    axes[1].set_title(rf"Top {top_n} Features by Mutual Information")
+    axes[1].set_xlabel(r"Mutual Information Score")
+    axes[1].set_ylabel(r"Feature")
 
     plt.tight_layout()
     plt.show()

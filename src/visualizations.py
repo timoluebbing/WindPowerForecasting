@@ -6,10 +6,19 @@ from tueplots import bundles
 from tueplots.constants.color import rgb
 
 
-def setup_tueplots(column="full", n_rows=1, n_cols=1, use_tex=True):
+plt.rcParams.update(
+    {
+        "text.usetex": True,
+        "font.family": "serif",  # or 'sans-serif' or other LaTeX fonts
+        "text.latex.preamble": r"\usepackage{amsmath}",
+    }
+)
+
+
+def setup_tueplots(rel_width=1.5, n_rows=1, n_cols=1, use_tex=True):
     plt.rcParams.update(
-        bundles.icml2022(
-            column=column,
+        bundles.neurips2024(
+            rel_width=rel_width,
             nrows=n_rows,
             ncols=n_cols,
             usetex=use_tex,
@@ -32,58 +41,64 @@ def plot_wind_power_composition(
     Returns:
         plt.Figure: The figure object containing the plot.
     """
-    time_interval = (
-        f"{dates.min().strftime('%Y-%m-%d')} to {dates.max().strftime('%Y-%m-%d')}"
-    )
 
-    fig, ax = plt.subplots(figsize=(12, 6))
+    fig, ax = plt.subplots(figsize=(12, 5))
     locator = ax.xaxis.set_major_locator(mdates.AutoDateLocator())
     ax.xaxis.set_major_formatter(mdates.AutoDateFormatter(locator=locator))
 
-    ax.plot(dates, wind_offshore, label="Wind Offshore [MW]", color="orange", alpha=0.7)
     ax.plot(
         dates,
-        wind_offshore.rolling(window=moving_average_window).mean(),
-        label=f"Wind Offshore [MW] - MA ({moving_average_window} hours)",
-        color="red",
-        alpha=0.9,
+        wind_offshore,
+        label=r"Wind Offshore [MW]",
+        color=rgb.tue_ocre,
+        alpha=0.7,
     )
     ax.plot(
         dates,
+        wind_offshore.rolling(window=moving_average_window).mean(),
+        label=rf"Wind Offshore [MW] - MA ({moving_average_window} hours)",
+        color=rgb.tue_red,
+        alpha=0.9,
+    )
+    
+    ax.plot(
+        dates,
         wind_onshore + wind_offshore,
-        label="Wind Sum [MW]",
-        color="green",
+        label=r"Wind Sum [MW]",
+        color=rgb.tue_darkblue,
         alpha=0.7,
     )
     ax.plot(
         dates,
         (wind_onshore + wind_offshore).rolling(window=moving_average_window).mean(),
-        label=f"Wind Sum [MW] - MA ({moving_average_window} hours)",
-        color="darkgreen",
+        label=rf"Wind Sum [MW] - MA ({moving_average_window} hours)",
+        color="black",
         alpha=0.9,
     )
+    
     ax.fill_between(
         dates,
         wind_offshore,
         wind_onshore + wind_offshore,
-        color="lightgreen",
+        color=rgb.tue_lightblue,
         alpha=0.5,
-        label="Wind Onshore Contribution",
+        label=r"Wind Onshore Contribution",
     )
     ax.fill_between(
         dates,
         0,
         wind_offshore,
-        color="lightcoral",
+        color=rgb.tue_orange,
         alpha=0.5,
-        label="Wind Offshore Contribution",
+        label=r"Wind Offshore Contribution",
     )
 
-    ax.set_title(f"Composition of Wind Power in Germany [{time_interval}]")
-    ax.set_xlabel("Time (hours)")
-    ax.set_ylabel("Wind Power [MW]")
+    ax.set_title(r"Composition of Wind Power in Germany")
+    ax.set_xlabel(r"Time (hours)")
+    ax.set_ylabel(r"Wind Power [MW]")
     ax.legend()
     plt.xticks(rotation=45)
+    plt.tight_layout()
     plt.show()
 
     return fig
@@ -96,7 +111,7 @@ def plot_wind_speed_components_no_split(weather: pd.DataFrame) -> None:
     v100 = weather["v100"]
 
     # Plot the data
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 10))
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 10))
     locator1 = ax1.xaxis.set_major_locator(mdates.AutoDateLocator())
     ax1.xaxis.set_major_formatter(mdates.AutoDateFormatter(locator1))
     locator2 = ax2.xaxis.set_major_locator(mdates.AutoDateLocator())
@@ -138,7 +153,7 @@ def plot_wind_speed_components(weather: pd.DataFrame, rolling_window: int = 24 *
 
     # setup_tueplots(column="full", n_rows=2, n_cols=1, use_tex=True)
     # Plot the data
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 10))
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 8))
     locator1 = ax1.xaxis.set_major_locator(mdates.AutoDateLocator())
     ax1.xaxis.set_major_formatter(mdates.AutoDateFormatter(locator1))
     locator2 = ax2.xaxis.set_major_locator(mdates.AutoDateLocator())
@@ -147,28 +162,28 @@ def plot_wind_speed_components(weather: pd.DataFrame, rolling_window: int = 24 *
     ax1.plot(
         weather.index,
         u10_north.rolling(window=rolling_window).mean(),
-        label="u10 North Monthly MA [m/s]",
+        label=r"u10 North Monthly MA [m/s]",
         color=rgb.tue_blue,
         alpha=1,
     )
     ax1.plot(
         weather.index,
         u100_north.rolling(window=rolling_window).mean(),
-        label="u100 North Monthly MA [m/s]",
+        label=r"u100 North Monthly MA [m/s]",
         color=rgb.tue_darkblue,
         alpha=1,
     )
     ax1.plot(
         weather.index,
         u10_south.rolling(window=rolling_window).mean(),
-        label="u10 South Monthly MA [m/s]",
+        label=r"u10 South Monthly MA [m/s]",
         color=rgb.tue_orange,
         alpha=1,
     )
     ax1.plot(
         weather.index,
         u100_south.rolling(window=rolling_window).mean(),
-        label="u100 South Monthly MA [m/s]",
+        label=r"u100 South Monthly MA [m/s]",
         color=rgb.tue_ocre,
         alpha=1,
     )
@@ -176,36 +191,36 @@ def plot_wind_speed_components(weather: pd.DataFrame, rolling_window: int = 24 *
         0, color="black", linestyle="--", linewidth=1, alpha=0.7
     )
     ax1.yaxis.grid(True, linestyle="--", linewidth=0.5, alpha=0.7)
-    ax1.set_title("East-West Wind Speed Components (u)")
-    ax1.set_ylabel("Wind Speed [m/s]")
+    ax1.set_title(r"East-West Wind Speed Components (u)")
+    ax1.set_ylabel(r"Wind Speed [m/s]")
     ax1.legend()
 
     # Plot second subplot - v components
     ax2.plot(
         weather.index,
         v10_north.rolling(window=rolling_window).mean(),
-        label="v10 North Monthly MA [m/s]",
+        label=r"v10 North Monthly MA [m/s]",
         color=rgb.tue_blue,
         alpha=1,
     )
     ax2.plot(
         weather.index,
         v100_north.rolling(window=rolling_window).mean(),
-        label="v100 North Monthly MA [m/s]",
+        label=r"v100 North Monthly MA [m/s]",
         color=rgb.tue_darkblue,
         alpha=1,
     )
     ax2.plot(
         weather.index,
         v10_south.rolling(window=rolling_window).mean(),
-        label="v10 South Monthly MA [m/s]",
+        label=r"v10 South Monthly MA [m/s]",
         color=rgb.tue_orange,
         alpha=1,
     )
     ax2.plot(
         weather.index,
         v100_south.rolling(window=rolling_window).mean(),
-        label="v100 South Monthly MA [m/s]",
+        label=r"v100 South Monthly MA [m/s]",
         color=rgb.tue_ocre,
         alpha=1,
     )
@@ -213,10 +228,9 @@ def plot_wind_speed_components(weather: pd.DataFrame, rolling_window: int = 24 *
         0, color="black", linestyle="--", linewidth=1, alpha=0.7
     )
     ax2.yaxis.grid(True, linestyle="--", linewidth=0.5, alpha=0.7)
-    ax2.set_title("North-South Wind Speed Components (v)")
-    ax2.set_xlabel("Time")
-    ax2.set_ylabel("Wind Speed [m/s]")
+    ax2.set_title(r"North-South Wind Speed Components (v)")
+    ax2.set_xlabel(r"Time")
+    ax2.set_ylabel(r"Wind Speed [m/s]")
     ax2.legend()
-
     plt.tight_layout()
     plt.show()

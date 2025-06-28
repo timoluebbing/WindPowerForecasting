@@ -1,0 +1,148 @@
+Training model for forecast step 1/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:56<01:25,  2.85s/it] Epoch 69/100 - ELBO Loss: -0.780
+ 80%|████████  | 40/50 [01:53<00:28,  2.85s/it] Epoch 89/100 - ELBO Loss: -0.826
+100%|██████████| 50/50 [02:21<00:00,  2.84s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_0.pt
+
+Training model for forecast step 2/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:57<01:25,  2.85s/it] Epoch 69/100 - ELBO Loss: -0.259
+ 80%|████████  | 40/50 [01:56<00:28,  2.89s/it] Epoch 89/100 - ELBO Loss: -0.317
+100%|██████████| 50/50 [02:25<00:00,  2.91s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_1.pt
+
+Training model for forecast step 3/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:57<01:26,  2.90s/it] Epoch 69/100 - ELBO Loss: 0.032
+ 80%|████████  | 40/50 [01:55<00:28,  2.89s/it] Epoch 89/100 - ELBO Loss: -0.003
+100%|██████████| 50/50 [02:24<00:00,  2.88s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_2.pt
+
+Training model for forecast step 4/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:57<01:25,  2.84s/it] Epoch 69/100 - ELBO Loss: 0.243
+ 80%|████████  | 40/50 [01:54<00:28,  2.89s/it] Epoch 89/100 - ELBO Loss: 0.217
+100%|██████████| 50/50 [02:24<00:00,  2.88s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_3.pt
+
+Training model for forecast step 5/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:58<01:27,  2.92s/it] Epoch 69/100 - ELBO Loss: 0.406
+ 80%|████████  | 40/50 [01:56<00:28,  2.87s/it] Epoch 89/100 - ELBO Loss: 0.382
+100%|██████████| 50/50 [02:25<00:00,  2.92s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_4.pt
+
+Training model for forecast step 6/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:58<01:27,  2.92s/it] Epoch 69/100 - ELBO Loss: 0.528
+ 80%|████████  | 40/50 [01:56<00:29,  2.92s/it] Epoch 89/100 - ELBO Loss: 0.504
+100%|██████████| 50/50 [02:24<00:00,  2.90s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_5.pt
+
+Training model for forecast step 7/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:57<01:26,  2.88s/it] Epoch 69/100 - ELBO Loss: 0.630
+ 80%|████████  | 40/50 [01:55<00:28,  2.87s/it] Epoch 89/100 - ELBO Loss: 0.611
+100%|██████████| 50/50 [02:24<00:00,  2.89s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_6.pt
+
+Training model for forecast step 8/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:57<01:26,  2.88s/it] Epoch 69/100 - ELBO Loss: 0.714
+ 80%|████████  | 40/50 [01:55<00:28,  2.84s/it] Epoch 89/100 - ELBO Loss: 0.694
+100%|██████████| 50/50 [02:24<00:00,  2.89s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_7.pt
+
+Training model for forecast step 9/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:57<01:26,  2.90s/it] Epoch 69/100 - ELBO Loss: 0.783
+ 80%|████████  | 40/50 [01:55<00:29,  2.90s/it] Epoch 89/100 - ELBO Loss: 0.763
+100%|██████████| 50/50 [02:23<00:00,  2.88s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_8.pt
+
+Training model for forecast step 10/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:57<01:26,  2.88s/it] Epoch 69/100 - ELBO Loss: 0.842
+ 80%|████████  | 40/50 [01:55<00:29,  2.91s/it] Epoch 89/100 - ELBO Loss: 0.824
+100%|██████████| 50/50 [02:24<00:00,  2.89s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_9.pt
+
+Training model for forecast step 11/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:57<01:26,  2.88s/it] Epoch 69/100 - ELBO Loss: 0.887
+ 80%|████████  | 40/50 [01:55<00:28,  2.85s/it] Epoch 89/100 - ELBO Loss: 0.868
+100%|██████████| 50/50 [02:24<00:00,  2.89s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_10.pt
+
+Training model for forecast step 12/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:57<01:26,  2.89s/it] Epoch 69/100 - ELBO Loss: 0.933
+ 80%|████████  | 40/50 [01:55<00:28,  2.90s/it] Epoch 89/100 - ELBO Loss: 0.917
+100%|██████████| 50/50 [02:24<00:00,  2.88s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_11.pt
+
+Training model for forecast step 13/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:58<01:26,  2.89s/it] Epoch 69/100 - ELBO Loss: 0.970
+ 80%|████████  | 40/50 [01:55<00:28,  2.89s/it] Epoch 89/100 - ELBO Loss: 0.953
+100%|██████████| 50/50 [02:24<00:00,  2.89s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_12.pt
+
+Training model for forecast step 14/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:58<01:26,  2.90s/it] Epoch 69/100 - ELBO Loss: 1.008
+ 80%|████████  | 40/50 [01:55<00:28,  2.87s/it] Epoch 89/100 - ELBO Loss: 0.990
+100%|██████████| 50/50 [02:24<00:00,  2.90s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_13.pt
+
+Training model for forecast step 15/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:57<01:26,  2.89s/it] Epoch 69/100 - ELBO Loss: 1.037
+ 80%|████████  | 40/50 [01:54<00:28,  2.85s/it] Epoch 89/100 - ELBO Loss: 1.020
+100%|██████████| 50/50 [02:23<00:00,  2.88s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_14.pt
+
+Training model for forecast step 16/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:58<01:27,  2.91s/it] Epoch 69/100 - ELBO Loss: 1.059
+ 80%|████████  | 40/50 [01:55<00:28,  2.89s/it] Epoch 89/100 - ELBO Loss: 1.045
+100%|██████████| 50/50 [02:24<00:00,  2.89s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_15.pt
+
+Training model for forecast step 17/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:57<01:26,  2.87s/it] Epoch 69/100 - ELBO Loss: 1.080
+ 80%|████████  | 40/50 [01:55<00:28,  2.88s/it] Epoch 89/100 - ELBO Loss: 1.065
+100%|██████████| 50/50 [02:24<00:00,  2.88s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_16.pt
+
+Training model for forecast step 18/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:57<01:25,  2.86s/it] Epoch 69/100 - ELBO Loss: 1.097
+ 80%|████████  | 40/50 [01:55<00:28,  2.90s/it] Epoch 89/100 - ELBO Loss: 1.083
+100%|██████████| 50/50 [02:24<00:00,  2.89s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_17.pt
+
+Training model for forecast step 19/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:58<01:26,  2.89s/it] Epoch 69/100 - ELBO Loss: 1.115
+ 80%|████████  | 40/50 [01:55<00:28,  2.89s/it] Epoch 89/100 - ELBO Loss: 1.101
+100%|██████████| 50/50 [02:24<00:00,  2.90s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_18.pt
+
+Training model for forecast step 20/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:57<01:25,  2.86s/it] Epoch 69/100 - ELBO Loss: 1.132
+ 80%|████████  | 40/50 [01:55<00:28,  2.86s/it] Epoch 89/100 - ELBO Loss: 1.118
+100%|██████████| 50/50 [02:24<00:00,  2.89s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_19.pt
+
+Training model for forecast step 21/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:57<01:27,  2.92s/it] Epoch 69/100 - ELBO Loss: 1.144
+ 80%|████████  | 40/50 [01:55<00:29,  2.91s/it] Epoch 89/100 - ELBO Loss: 1.128
+100%|██████████| 50/50 [02:24<00:00,  2.89s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_20.pt
+
+Training model for forecast step 22/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:57<01:26,  2.88s/it] Epoch 69/100 - ELBO Loss: 1.153
+ 80%|████████  | 40/50 [01:55<00:28,  2.85s/it] Epoch 89/100 - ELBO Loss: 1.138
+100%|██████████| 50/50 [02:24<00:00,  2.88s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_21.pt
+
+Training model for forecast step 23/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:57<01:26,  2.89s/it] Epoch 69/100 - ELBO Loss: 1.160
+ 80%|████████  | 40/50 [01:56<00:28,  2.88s/it] Epoch 89/100 - ELBO Loss: 1.145
+100%|██████████| 50/50 [02:25<00:00,  2.90s/it]
+Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_22.pt
+
+Training model for forecast step 24/24 starting from epoch 50.
+ 40%|████      | 20/50 [00:58<01:27,  2.90s/it] Epoch 69/100 - ELBO Loss: 1.172
+ 80%|████████  | 40/50 [01:55<00:28,  2.87s/it] Epoch 89/100 - ELBO Loss: 1.159
+100%|██████████| 50/50 [02:24<00:00,  2.89s/it]Checkpoint saved to ../checkpoints/checkpoint_v3_M1000_F14/horizon_23.pt
+
+
+2nd training run:
+57 min for 50 epochs
+
+In total: 100 epochs

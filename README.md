@@ -17,13 +17,13 @@ The dataset consists of historical wind power production data from the "Realised
 - **src/** — helper modules (`preprocessing`, `visualizations`, `checkpoint`, `feature_selection`, etc.)  
 - **checkpoints/** — saved model checkpoints  
 - **experiments/**  
-  - simple_model.ipynb — baseline GP regression on a small horizon  
   - **tutorial.ipynb** — end-to-end workflow (see below)  
-  - `approximateGP.ipynb`, `demo_approx.ipynb`, …
+  - simple_model.ipynb — testing baseline GP regression on a small horizon  
+  - `approximateGP.ipynb`, `demo_approx.ipynb`, (testing)
 
 ## Tutorial
 
-See tutorial.ipynb for a detailed step-by-step guide:
+See [tutorial.ipynb](experiments/tutorial.ipynb) for a detailed step-by-step guide:
 
 1. **Data Loading & Preprocessing**  
    - Load and resample “Realised Supply Germany” & weather data  

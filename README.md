@@ -61,7 +61,7 @@ Full horizon best test sample:
 Full horizon worst test sample:
 ![Forecasting Results](/figures/test_sample_725.png)
 
-The SVGP model performs resonably well for short forecasting horizons, but struggles with the long-term forecast horizon. Single horizon forecast along the entire test set (horizon=3):
+The SVGP model performs resonably well for short forecasting horizons, but struggles with the long-term forecast horizon. Single horizon forecast along the first 2 month of the test set (horizon=3):
 ![Single Horizon Forecast](/figures/test_horizon_3_n_hours_1344.png)
 
 

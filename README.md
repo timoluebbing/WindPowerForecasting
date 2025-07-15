@@ -4,7 +4,7 @@ A collection of notebooks and modules for forecasting wind power production in G
 
 ## Data
 
-The dataset consists of historical wind power production data from the "Realised Supply Germany" dataset, along with weather data from multiple stations. The data is available in CSV format and includes:
+The dataset consists of historical wind power production data from the "Realised Supply Germany" dataset, along with weather data from multiple stations. The data is available in CSV format ([download](https://nc.mlcloud.uni-tuebingen.de/index.php/s/K8cQs6WeYZKNnas)) and includes:
 
 - Wind power production (in MW) from 2017 to 2023
 - Weather data (temperature, wind speed, etc.) from various weather stations in Germany.
